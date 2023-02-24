@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://accounts.google.com/gsi/client"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="signInDiv"></div>
+
+    <script>
+
+        const init = () => {
+            setTimeout(() => {
+                google.accounts.id.initialize({
+                    client_id: "413754525673-7mk6v4gafvoeo9s50t8jqafa5oocosoq.apps.googleusercontent.com",
+                    callback: handleCallbackResponse
+                })
+
+                google.accounts.id.renderButton(
+                    document.getElementById('signInDiv'), { theme: 'outline', size: 'large' }
+                )
+            }, 1000)
+        }
+
+        const decodeJWT = (string) => {
+            var arr = string.split('.');
+            return { header: JSON.parse(atob(arr[0])), payload: JSON.parse(atob(arr[1])), secret: arr[2] }
+        }
+
+        const handleCallbackResponse = (response) => {
+            const jwtObj = decodeJWT(response.credential);
+            console.log(jwtObj);
+
+            if (jwtObj) {
+                alert('success login')
+            }
+        }
+
+        init();
+
+    </script>
+
+</body>
+
+</html>
